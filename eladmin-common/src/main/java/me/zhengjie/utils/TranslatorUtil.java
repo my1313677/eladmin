@@ -1,14 +1,31 @@
+/*
+ *  Copyright 2019-2020 Zheng Jie
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package me.zhengjie.utils;
 
 import cn.hutool.json.JSONArray;
-import lombok.var;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+/**
+ * @author Zheng Jie
+ * 翻译工具类
+ */
 public class TranslatorUtil {
 
     public static String translate(String word){
@@ -26,7 +43,7 @@ public class TranslatorUtil {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
             String inputLine;
-            StringBuffer response = new StringBuffer();
+            StringBuilder response = new StringBuilder();
 
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
@@ -38,15 +55,12 @@ public class TranslatorUtil {
         }
     }
 
-    private static String parseResult(String inputJson) throws Exception {
-        JSONArray jsonArray = new JSONArray(inputJson);
-        JSONArray jsonArray2 = (JSONArray) jsonArray.get(0);
-        String result ="";
-
-        for(var i = 0; i < jsonArray2.size(); i ++){
-            result += ((JSONArray) jsonArray2.get(i)).get(0).toString();
+    private static String parseResult(String inputJson){
+        JSONArray jsonArray2 = (JSONArray) new JSONArray(inputJson).get(0);
+        StringBuilder result = new StringBuilder();
+        for (Object o : jsonArray2) {
+            result.append(((JSONArray) o).get(0).toString());
         }
-        return result;
+        return result.toString();
     }
-
 }
